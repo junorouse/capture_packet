@@ -167,7 +167,7 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header,
 	}
 	payload = (u_char *)(packet + SIZE_ETHERNET + size_ip + size_tcp);
 
-    puts("\x1B[32m========== New Packet ==========\x1B[0m");
+    puts("\x1B[32m============== Packet ==============\x1B[0m");
 
     printf("\x1B[36mdest mac -> %02X:%02X:%02X:%02X:%02X:%02X\n", packet[hIdx++], 
             packet[hIdx++], packet[hIdx++], packet[hIdx++], packet[hIdx++], packet[hIdx++]);
@@ -211,20 +211,19 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header,
     dport = ntohs(*(unsigned short *)type);
     printf("\x1B[36mdport: %u\n", dport);
 
-    hIdx += 4;
-    tcp_seq_[0] = packet[hIdx++];
-    tcp_seq_[1] = packet[hIdx++];
-    tcp_seq_[2] = packet[hIdx++];
     tcp_seq_[3] = packet[hIdx++];
+    tcp_seq_[2] = packet[hIdx++];
+    tcp_seq_[1] = packet[hIdx++];
+    tcp_seq_[0] = packet[hIdx++];
 
-    tcp_seq = *(unsigned int *)tcp_seq_;
+    tcp_seq = *(unsigned int *)tcp_seq_; // big endian
     printf("\x1B[92mtcp_seq -> %u\n", tcp_seq);
 
     hIdx += 4;
 
     // puts(payload);
-    printf("caplen: %d\n", header->caplen);
-    printf("wtf: %d\n", SIZE_ETHERNET + size_ip + size_tcp);
+    printf("\x1B[34mcap len: %d\n", header->caplen);
+    printf("header len: %d\n\x1B[37m", SIZE_ETHERNET + size_ip + size_tcp);
     int realSize = header->caplen - (SIZE_ETHERNET + size_ip + size_tcp);
     if (!(realSize <= 0))
         DumpHex(payload, header->caplen);
