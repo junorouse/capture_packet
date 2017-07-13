@@ -7,3 +7,4 @@
 3. [hexdump](https://gist.github.com/ccbrown/9722406)
 4. [color map](http://misc.flogisoft.com/bash/tip_colors_and_formatting)
 
+![](./demo.png)
