@@ -10,7 +10,7 @@
 pcap_t *p;
 #define IP_TCP 0x06
 
-void DumpHex(const void* data, unsigned int size) {
+void DumpHex(const void* data, u_int64_t size) {
     char ascii[17];
     size_t i, j;
     ascii[16] = '\0';
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
         printf("\x1B[93mether type -> %#x, %s\n", ethType, ethDesc);
 
         const struct libnet_ipv4_hdr *ipHeader = (const struct libnet_ipv4_hdr *)(pd + 14);
-        const unsigned int ipHeaderLen = ipHeader->ip_hl * 4;
+        const uint32_t ipHeaderLen = ipHeader->ip_hl * 4;
         const uint8_t *ipData;
 
         char ip_buffer[16];
